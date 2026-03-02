@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ActionResult",
+  "description": "Result of Action Engine command execution",
+  "type": "object",
+  "required": [
+    "command_id",
+    "diagnosis_id",
+    "tenant_id",
+    "action_type",
+    "status",
+    "executed_at",
+    "execution_report",
+    "hash"
+  ],
+  "properties": {
+    "command_id": {
+      "type": "string",
+      "description": "Unique identifier for this command execution",
+      "pattern": "^cmd-[0-9]+-[a-z0-9]+$"
+    },
+    "diagnosis_id": {
+      "type": "string",
+      "description": "Reference to the originating diagnosis"
+    },
+    "tenant_id": {
+      "type": "string",
+      "description": "Tenant identifier"
+    },
+    "action_type": {
+      "type": "string",
+      "enum": ["SWAP_VARIANT", "CONFIG_TUNE", "BUFFER_ENABLE", "DEGRADE_MODE"],
+      "description": "Type of action executed"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["SUCCESS", "FAILED", "BLOCKED", "DUPLICATE"],
+      "description": "Execution result status"
+    },
+    "executed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 timestamp of execution"
+    },
+    "execution_report": {
+      "type": "object",
+      "required": ["before_state", "after_state", "rollback_available"],
+      "properties": {
+        "before_state": {
+          "type": "object",
+          "description": "System state before execution"
+        },
+        "after_state": {
+          "type": "object",
+          "description": "System state after execution"
+        },
+        "rollback_available": {
+          "type": "boolean",
+          "description": "Whether rollback is possible"
+        }
+      }
+    },
+    "hash": {
+      "type": "string",
+      "description": "SHA-256 hash of the result for audit integrity",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

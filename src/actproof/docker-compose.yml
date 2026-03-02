@@ -1,0 +1,121 @@
+# ActProof Demo Package v0.1
+# Scenariusz: heavy -> CC_UP -> diagnosis -> swap -> CC_DOWN
+
+version: "3.8"
+
+services:
+  # =============================================================================
+  # LOAD GENERATOR - generuje ruch do gateway
+  # =============================================================================
+  load-generator:
+    build: ./load-generator
+    container_name: actproof-load-generator
+    depends_on:
+      - gateway
+    environment:
+      - TARGET_URL=http://gateway:8080
+      - RPS=10
+      - DURATION_SEC=600
+    networks:
+      - actproof-net
+    restart: unless-stopped
+
+  # =============================================================================
+  # GATEWAY - proxy do ServiceX
+  # =============================================================================
+  gateway:
+    build: ./gateway
+    container_name: actproof-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - SERVICEX_URL=http://servicex:3000
+    depends_on:
+      - servicex
+    networks:
+      - actproof-net
+    restart: unless-stopped
+
+  # =============================================================================
+  # SERVICEX - domyslnie HEAVY (profil: heavy)
+  # Zmiana wariantu: docker-compose --profile light up -d servicex
+  # =============================================================================
+  servicex:
+    build:
+      context: ./services/servicex
+      args:
+        - VARIANT=${SERVICEX_VARIANT:-heavy}
+    container_name: actproof-servicex
+    environment:
+      - VARIANT=${SERVICEX_VARIANT:-heavy}
+      - MCP_ENABLED=true
+    ports:
+      - "3000:3000"
+    networks:
+      - actproof-net
+    restart: unless-stopped
+
+  # =============================================================================
+  # CFO LITE - polling, baseline, CC detection, diagnosis emission
+  # =============================================================================
+  cfo:
+    build: ./cfo
+    container_name: actproof-cfo
+    environment:
+      - POLL_INTERVAL_SEC=5
+      - BASELINE_WINDOW_SEC=120
+      - THRESHOLD_K=1.5
+      - HOLD_SEC=60
+      - COOLDOWN_SEC=120
+      - SERVICEX_MCP_URL=http://servicex:3000/mcp/observe
+      - ACTION_ENGINE_URL=http://action-engine:4000/diagnosis
+    ports:
+      - "6000:6000"
+    volumes:
+      - ./evidence:/app/evidence
+    depends_on:
+      - servicex
+      - action-engine
+    networks:
+      - actproof-net
+    restart: unless-stopped
+
+  # =============================================================================
+  # ACTION ENGINE - policy gates, command translation, SO execution
+  # =============================================================================
+  action-engine:
+    build: ./action-engine
+    container_name: actproof-action-engine
+    environment:
+      - COOLDOWN_SEC=120
+      - ORCHESTRATOR_URL=http://orchestrator:5000/execute
+    volumes:
+      - ./evidence:/app/evidence
+    ports:
+      - "4000:4000"
+    depends_on:
+      - orchestrator
+    networks:
+      - actproof-net
+    restart: unless-stopped
+
+  # =============================================================================
+  # SERVICE ORCHESTRATOR (MOCK) - executes swap via docker-compose
+  # =============================================================================
+  orchestrator:
+    build: ./orchestrator
+    container_name: actproof-orchestrator
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./evidence:/app/evidence
+    ports:
+      - "5000:5000"
+    networks:
+      - actproof-net
+    restart: unless-stopped
+
+networks:
+  actproof-net:
+    driver: bridge

@@ -1,0 +1,50 @@
+{
+  "diagnosis_id": "diag-1737100000000-abc123def",
+  "tenant_id": "demo",
+  "timestamp": "2026-01-17T10:00:00.000Z",
+  "type": "CC_TREND_HIGH",
+  "targets": ["servicex"],
+  "recommended_action": {
+    "type": "SWAP_VARIANT",
+    "params": {
+      "service_logical_id": "servicex",
+      "from_variant": "heavy",
+      "to_variant": "light"
+    }
+  },
+  "evidence": {
+    "baseline_cc": 12.5,
+    "current_cc": 45.8,
+    "cc_formula": "latency_p99 * (error_rate + retry_rate)",
+    "threshold_cc": 18.75,
+    "breach_duration_seconds": 60,
+    "cc_series": [
+      { "t": 1737099940000, "cc": 42.3 },
+      { "t": 1737099945000, "cc": 44.1 },
+      { "t": 1737099950000, "cc": 46.8 },
+      { "t": 1737099955000, "cc": 45.2 },
+      { "t": 1737099960000, "cc": 47.9 },
+      { "t": 1737099965000, "cc": 44.5 },
+      { "t": 1737099970000, "cc": 48.1 },
+      { "t": 1737099975000, "cc": 45.8 },
+      { "t": 1737099980000, "cc": 46.3 },
+      { "t": 1737099985000, "cc": 44.9 },
+      { "t": 1737099990000, "cc": 47.2 },
+      { "t": 1737099995000, "cc": 45.8 }
+    ],
+    "mcp_observe_snapshot": {
+      "service_logical_id": "servicex",
+      "current_variant": "heavy",
+      "timestamp": "2026-01-17T09:59:55.000Z",
+      "status": "degraded",
+      "metrics": {
+        "latency_p99": 520,
+        "retry_rate": 0.042,
+        "error_rate": 0.046,
+        "queue_depth": 0,
+        "request_count_window": 287
+      },
+      "events": []
+    }
+  }
+}

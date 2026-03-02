@@ -1,84 +1,90 @@
-# Forge — Repozytorium
+# Forge
 
-## Struktura katalogów
+**Maszyna do tworzenia systemów biznesowych**
+
+---
+
+## Quick Start
+
+### Rozpoczęcie sesji z Claude
+
+1. Otwórz `/prompts/current_context.md`
+2. Skopiuj treść do nowego chatu
+3. Dodaj opis zadania z `/backlog/backlog.md`
+4. Pracuj
+
+### Po sesji
+
+1. Zapisz outputy do odpowiednich katalogów
+2. Zaktualizuj `/evidence/sessions.md`
+3. Zaktualizuj `/backlog/backlog.md`
+4. Zaktualizuj `/prompts/current_context.md`
+
+---
+
+## Struktura repozytorium
 
 ```
 forge/
+├── MASTER_PLAN.md              # Plan projektu v1.1
+├── README.md                   # Ten plik
 │
-├── README.md                    # Opis projektu, quick start
+├── prompts/                    # Session System
+│   └── current_context.md      # Pamięć dla sesji
 │
-├── docs/                        # Dokumentacja
-│   ├── vision/                  # Dokumenty wizji
-│   │   ├── Forge_Vision_v1.1.md
-│   │   ├── ActProof_Vision_v1.0.md
-│   │   ├── ALT_13687_Vision_v1.0.md
-│   │   └── Platform_Vision_v0.1.md
-│   │
-│   ├── adr/                     # Architecture Decision Records
-│   │   └── ADR_Pack_v0.1.md
-│   │
-│   ├── specs/                   # Specyfikacje techniczne
-│   │   ├── CFO_Lite_Spec_v0.1.md
-│   │   ├── Action_Engine_Spec_v0.1.md
-│   │   └── Case_Zero_Appendix_v1.1.md
-│   │
-│   └── contracts/               # Kontrakty danych (JSON Schema)
-│       ├── CFODiagnosis.schema.json
-│       └── ActionResult.schema.json
+├── backlog/
+│   └── backlog.md              # Lista zadań
 │
-├── src/                         # Kod źródłowy
-│   ├── actproof/                # ActProof (z demo package)
-│   │   ├── cfo/
-│   │   ├── action-engine/
-│   │   ├── orchestrator/
-│   │   └── docker-compose.yml
-│   │
-│   ├── marketplace/             # [DO ZBUDOWANIA]
-│   ├── billing/                 # [DO ZBUDOWANIA]
-│   ├── agent/                   # [DO ZBUDOWANIA]
-│   └── forge-core/              # [DO ZBUDOWANIA]
+├── evidence/
+│   └── sessions.md             # Log sesji
 │
-├── prompts/                     # Kontekst dla sesji z Claude
-│   ├── current_context.md       # Aktualny stan projektu
-│   ├── session_template.md      # Szablon rozpoczęcia sesji
-│   └── history/                 # Archiwum kontekstów
+├── docs/
+│   ├── vision/                 # Dokumenty Vision (LOCK)
+│   ├── adr/                    # Architecture Decision Records
+│   ├── specs/                  # Specyfikacje techniczne
+│   ├── contracts/              # Kontrakty (stare, do migracji)
+│   ├── flows/                  # Flow diagrams (DO ZROBIENIA)
+│   └── decisions/              # Decision Notes
 │
-├── evidence/                    # Dowody postępu
-│   ├── sessions.md              # Log sesji
-│   └── demos/                   # Nagrania, screenshoty
+├── contracts/                  # Kontrakty v0.1+ (schema.json)
+├── examples/                   # Przykłady dla kontraktów
 │
-└── backlog/                     # Zadania
-    ├── backlog.md               # Lista zadań
-    └── completed/               # Zamknięte zadania
+├── tests/
+│   └── conformance/            # Testy zgodności
+│
+├── impl/
+│   ├── reference/              # Implementacje referencyjne
+│   └── alt/                    # Implementacje alternatywne
+│
+└── src/
+    └── actproof/               # ActProof Demo (LOCK)
 ```
 
 ---
 
-## Jak używać
+## Zasady (Master Plan v1.1)
 
-### Rozpoczęcie sesji z Claude:
-
-1. Otwórz `prompts/current_context.md`
-2. Skopiuj treść do Claude
-3. Dodaj: "Kontynuuj od backlog item #X"
-
-### Po sesji:
-
-1. Zapisz outputy do odpowiednich katalogów
-2. Zaktualizuj `evidence/sessions.md`
-3. Zaktualizuj `backlog/backlog.md`
-4. Zaktualizuj `prompts/current_context.md` dla następnej sesji
+1. **Design First** — najpierw kontrakty i flows, potem kod
+2. **Swapability Rule** — każdy moduł ma 2 implementacje
+3. **Minimal Spine** — bramka przed dużymi modułami
+4. **Session System** — repo jako jedyna pamięć
 
 ---
 
-## Pliki startowe
+## Fundamenty (LOCK)
 
-Repozytorium powinno zawierać na start:
-- [ ] Wszystkie dokumenty Vision (masz je)
-- [ ] ADR Pack v0.1 (masz)
-- [ ] Demo Package ActProof (masz)
-- [ ] Kontrakty JSON (masz)
-- [ ] Ten README
-- [ ] current_context.md (wygeneruję)
-- [ ] backlog.md (wygeneruję)
-- [ ] sessions.md (wygeneruję)
+- ALT-13687: "Prostsza ścieżka często istnieje"
+- Case Zero: "Alignment przez partnerstwo"
+- ActProof: CC jako metryka kontroli
+- Forge Vision v1.1: Pełna wizja platformy
+
+---
+
+## Status
+
+**Faza:** 0 (inicjalizacja) ✅  
+**Następna sesja:** #1 — Session Protocol
+
+---
+
+*Forge. Kujemy systemy biznesowe.*

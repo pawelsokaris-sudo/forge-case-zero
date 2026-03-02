@@ -1,0 +1,34 @@
+{
+  "command_id": "cmd-1737100060000-xyz789abc",
+  "diagnosis_id": "diag-1737100000000-abc123def",
+  "tenant_id": "demo",
+  "action_type": "SWAP_VARIANT",
+  "status": "SUCCESS",
+  "executed_at": "2026-01-17T10:01:00.000Z",
+  "execution_report": {
+    "before_state": {
+      "variant": "heavy"
+    },
+    "after_state": {
+      "variant": "light"
+    },
+    "rollback_available": true,
+    "so_response": {
+      "command_received": {
+        "type": "SWAP_VARIANT",
+        "service_logical_id": "servicex",
+        "from_variant": "heavy",
+        "to_variant": "light"
+      },
+      "executed_at": "2026-01-17T10:01:00.000Z",
+      "success": true,
+      "details": {
+        "method": "docker-compose",
+        "from_variant": "heavy",
+        "to_variant": "light",
+        "message": "Container recreated with new variant"
+      }
+    }
+  },
+  "hash": "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456"
+}

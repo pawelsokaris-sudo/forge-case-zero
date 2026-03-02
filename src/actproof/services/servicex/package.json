@@ -1,0 +1,9 @@
+{
+  "name": "servicex",
+  "version": "0.1.0",
+  "description": "ActProof Demo - ServiceX (heavy/light variants)",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
